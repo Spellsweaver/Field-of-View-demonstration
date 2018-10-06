@@ -39,10 +39,10 @@ function love.draw()
 			for j=1,50 do			
 				if seeall or vision[i][j] then
 					if map[i][j] then love.graphics.setColor(0,0,0)
-					else love.graphics.setColor(255,255,255)
+					else love.graphics.setColor(1,1,1)
 					end
 				else
-					love.graphics.setColor(60,60,60)
+					love.graphics.setColor(0.25,0.25,0.25)
 				end
 				love.graphics.rectangle('fill',cell_width*(i-1),cell_height*(j-1),cell_width,cell_height)
 			end
@@ -56,17 +56,15 @@ function rescan()
 end
 
 function love.mousepressed( x, y, button )
-	if button=='l' then
+	if button==1 then
 		map[wheremouse().x][wheremouse().y] = not map[wheremouse().x][wheremouse().y]
 		rescan()
-	elseif button=='wu' then
-		viewdist=math.min(viewdist+1,50)
-		rescan()
-	elseif button=='wd' then
-		viewdist=math.max(viewdist-1,0)
-		rescan()
 	end
+end
 
+function love.wheelmoved(x,y)
+	viewdist=math.max(math.min(viewdist+y,50),0)
+	rescan()
 end
 
 function love.update(dt)
